@@ -60,8 +60,9 @@ ENV DSPACE_INSTALL=/dspace
 COPY --from=ant_build /dspace $DSPACE_INSTALL
 WORKDIR $DSPACE_INSTALL
 # Need host command for "[dspace]/bin/make-handle-config"
+# imagemagick + ghostscript are required by the filter-media task (thumbnails, PDF preview generation)
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends host \
+    && apt-get install -y --no-install-recommends host imagemagick ghostscript \
     && apt-get purge -y --auto-remove \
     && rm -rf /var/lib/apt/lists/*
 # Expose Tomcat port and debugging port
