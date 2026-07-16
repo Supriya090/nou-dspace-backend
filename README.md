@@ -14,10 +14,9 @@ values you must change before anything will work, and the warnings you need to k
 All customizations live on the `local-customizations` branch (this is the branch you want, not
 `main`), on top of the unmodified `dspace-9.2` tag. On the backend, that's a small set of changes:
 Docker network/subnet settings and the `dspace.server.url`/`dspace.ui.url`/`dspace.name` values for
-this deployment, ImageMagick and Ghostscript added to the Docker image (required for thumbnail
-generation), and a small change to the subscription-notification email template's metadata list.
-The much larger set of customizations — branding, a custom view-only PDF viewer, and page text —
-live in the [frontend repo](https://github.com/Supriya090/nou-dspace-frontend); see its
+this deployment, and ImageMagick and Ghostscript added to the Docker image (required for thumbnail
+generation). The much larger set of customizations — branding, a custom view-only PDF viewer, and
+page text — live in the [frontend repo](https://github.com/Supriya090/nou-dspace-frontend); see its
 `CUSTOMIZATIONS.md` for the full list.
 
 ## Upstream DSpace documentation

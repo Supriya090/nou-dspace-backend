@@ -125,9 +125,9 @@ docker compose up -d --build dspace
 docker compose logs -f dspace
 ```
 
-Watch for the line `Started ServerApplication` in the log output — **this takes 60 to 90 seconds**.
-Do not proceed until you see it. Press `Ctrl+C` to stop following the logs (the container keeps
-running in the background).
+Watch for a line containing `Started ServerBootApplication` in the log output — startup time varies
+by hardware, from under a minute up to a couple of minutes. Do not proceed until you see it. Press
+`Ctrl+C` to stop following the logs (the container keeps running in the background).
 
 Once it's up, create the initial administrator account (you'll be prompted for email, password,
 first/last name):
@@ -193,7 +193,7 @@ fail silently with no thumbnails and no obvious error.
 A working deployment looks like this:
 
 - [ ] `docker compose ps` (in the backend repo) shows `dspace`, `dspacedb`, and `dspacesolr` all `Up`.
-- [ ] `docker compose logs dspace` contains `Started ServerApplication`.
+- [ ] `docker compose logs dspace` contains `Started ServerBootApplication`.
 - [ ] `curl -s http://localhost:8080/server/api` returns JSON (not a connection error, not a 500).
 - [ ] The frontend process is running and reachable on port 4000 (or through your reverse proxy).
 - [ ] The homepage shows "Nepal Open University Thesis Repository" text — if you still see generic
@@ -240,6 +240,22 @@ one) but no longer are — usually harmless leftovers from an earlier `up`. Clea
 ```bash
 docker compose down --remove-orphans
 ```
+
+**`docker compose up` fails with "Pool overlaps with other one on this address space", "container
+name ... already in use", or "port is already allocated"**
+All three mean something else on this host is already using the fixed subnet (`10.50.0.0/16`),
+fixed container names (`dspace`, `dspacedb`, `dspacesolr`), or fixed published ports (`8080`, `8000`,
+`5432`, `8983`) that `docker-compose.yml` hardcodes — most commonly a previous deployment attempt on
+the same machine that was never torn down, or an unrelated Docker project that happens to use the
+same subnet.
+1. Check what's already using them: `docker network ls`, `docker ps -a`, `ss -tlnp`.
+2. If it's a stale attempt you don't need anymore, remove it (`docker compose down` from that
+   project's directory, or `docker rm`/`docker network rm` — check first that you're not removing
+   something still in use).
+3. If it needs to coexist with something else on the same host, edit this repo's copy of
+   `docker-compose.yml`: change the `subnet:` value (and the matching `proxies.trusted.ipranges`,
+   which must always agree with it), the `container_name:` values, and/or the `published:` ports to
+   values that are free on this host.
 
 ---
 

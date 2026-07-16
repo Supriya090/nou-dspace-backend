@@ -58,10 +58,7 @@
 
     <!-- This list includes metadata values we want to include on the e-mail body of the notification -->
     <util:list id="generalMetadataEntity">
-        <bean class="org.apache.commons.lang3.tuple.ImmutablePair">
-            <constructor-arg value="dc.title"/>
-            <constructor-arg value="title"/>
-        </bean>
+        <value>dc.title</value>
     </util:list>
 
     <bean id="communityUpdates" class="org.dspace.subscriptions.objectupdates.CommunityUpdates" />
