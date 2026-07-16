@@ -4,7 +4,7 @@ networks:
       config:
         # Define a custom subnet for our DSpace network, so that we can easily trust requests from host to container.
         # If you customize this value, be sure to customize the 'proxies.trusted.ipranges' env variable below.
-        - subnet: 172.23.0.0/16
+        - subnet: 10.50.0.0/16
 services:
   # DSpace (backend) webapp container
   dspace:
@@ -17,9 +17,9 @@ services:
       # dspace.dir: Must match with Dockerfile's DSPACE_INSTALL directory.
       dspace__P__dir: /dspace
       # Uncomment to set a non-default value for dspace.server.url or dspace.ui.url
-      # dspace__P__server__P__url: http://localhost:8080/server
-      # dspace__P__ui__P__url: http://localhost:4000
-      dspace__P__name: 'DSpace Started with Docker Compose'
+      dspace__P__server__P__url: https://courage-appears-albuquerque-petition.trycloudflare.com/server
+      dspace__P__ui__P__url: https://smoke-trainer-vienna-tournament.trycloudflare.com
+      dspace__P__name: 'Nepal Open University Thesis Repository'
       # db.url: Ensure we are using the 'dspacedb' image for our database
       db__P__url: 'jdbc:postgresql://dspacedb:5432/dspace'
       # solr.server: Ensure we are using the 'dspacesolr' image for Solr
@@ -28,7 +28,7 @@ services:
       matomo__P__tracker__P__url: http://matomo
       # proxies.trusted.ipranges: This setting is required for a REST API running in Docker to trust requests
       # from the host machine. This IP range MUST correspond to the 'dspacenet' subnet defined above.
-      proxies__P__trusted__P__ipranges: '172.23.0'
+      proxies__P__trusted__P__ipranges: '10.50.0'
       LOGGING_CONFIG: /dspace/config/log4j2-container.xml
     image: "${DOCKER_REGISTRY:-docker.io}/${DOCKER_OWNER:-dspace}/dspace:${DSPACE_VER:-dspace-9_x-test}"
     build:
